@@ -13,7 +13,7 @@ training:
   early_stopping_patience: 5
   scheduler_factor: 0.5
   scheduler_patience: 3
-  resume_training: False
+  resume_training: True
 
 paths:
   save_dir: "../outputs/models/resnet50_finetuned.pth"
