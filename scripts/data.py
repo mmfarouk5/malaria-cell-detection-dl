@@ -13,11 +13,15 @@ train_transforms = transforms.Compose([
     transforms.RandomVerticalFlip(p=0.2),
     transforms.RandomRotation(20),
     transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2),
-    transforms.ToTensor()
+    transforms.Resize((224, 224)),  # Add this - ResNet50 expects 224x224
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # ImageNet normalization
 ])
 
 val_test_transforms = transforms.Compose([
-    transforms.ToTensor()
+    transforms.Resize((224, 224)),  # Add this
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # Add this
 ])
 
 train_data = datasets.ImageFolder(root=train_dir, transform=train_transforms)
