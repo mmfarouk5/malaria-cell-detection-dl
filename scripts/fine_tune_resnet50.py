@@ -11,12 +11,24 @@ from torch.nn.utils import clip_grad_norm_
 from torch.utils.tensorboard import SummaryWriter
 from data import train_loader, val_loader
 
+
 if torch.cuda.is_available():
     device = torch.device("cuda")
 elif torch.backends.mps.is_available():
     device = torch.device("mps")
 else:
     device = torch.device("cpu")
+
+
+def set_seed(seed):
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+    import numpy as np
+    import random
+    np.random.seed(seed)
+    random.seed(seed)
 
 
 def setup_logger():
@@ -27,8 +39,8 @@ def setup_logger():
     )
     return logging.getLogger(__name__)
 
-
 logger = setup_logger()
+
 
 def load_config(path="../config.yaml"):
     with open(path, "r") as f:
@@ -108,16 +120,6 @@ def validate(model, loader, criterion):
     accuracy = correct / total if total > 0 else 0
     return val_loss / len(loader), accuracy
 
-
-def set_seed(seed):
-    torch.manual_seed(seed)
-    torch.cuda.manual_seed_all(seed)
-    torch.backends.cudnn.deterministic = True
-    torch.backends.cudnn.benchmark = False
-    import numpy as np
-    import random
-    np.random.seed(seed)
-    random.seed(seed)
 
 
 def save_checkpoint(model, optimizer, scheduler, epoch, best_val_loss, path):
