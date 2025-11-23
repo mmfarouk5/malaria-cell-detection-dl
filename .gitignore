@@ -120,3 +120,4 @@ pyrightconfig.json
 .DS_Store
 data/
 team_info/
+outputs/models/checkpoint.pth
