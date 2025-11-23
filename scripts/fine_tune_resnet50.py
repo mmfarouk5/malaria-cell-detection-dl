@@ -9,7 +9,8 @@ from torch.optim import AdamW
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torch.nn.utils import clip_grad_norm_
 from torch.utils.tensorboard import SummaryWriter
-from torch.amp import autocast, GradScaler
+from torch import autocast
+from torch.amp import GradScaler
 from data import train_loader, val_loader
 
 
@@ -331,8 +332,7 @@ def main():
             optimizer,
             mode="min",
             factor=cfg["training"].get("scheduler_factor", 0.5),
-            patience=cfg["training"].get("scheduler_patience", 3),
-            verbose=True
+            patience=cfg["training"].get("scheduler_patience", 3)
         )
 
         amp_enabled = cfg.get("amp", {}).get("enabled", True)
